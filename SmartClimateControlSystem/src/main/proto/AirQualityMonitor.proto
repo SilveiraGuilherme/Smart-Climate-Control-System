@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package airqualitymonitor;
+
+option java_package = "distsys.smartclimatecontrolsystem.airquality";
+option java_outer_classname = "AirQualityMonitorOuterClass";
+
+service AirQualityMonitor {
+    rpc GetAirQuality(Empty) returns (AirQualityResponse);                          // Unary
+    rpc MonitorAirQuality(stream AirQualityCheck) returns (stream AirQualityAlert); // Bi-directional Streaming
+}
+
+message AirQualityCheck {
+    string location = 1;
+}
+
+message AirQualityResponse {
+    string status = 1;
+}
+
+message AirQualityAlert {
+    string alertMessage = 1;
+}
+
+message Empty {}

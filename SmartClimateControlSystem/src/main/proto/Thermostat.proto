@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package thermostat;
+
+option java_package = "distsys.smartclimatecontrolsystem.thermostat";
+option java_outer_classname = "ThermostatOuterClass";
+
+service Thermostat {
+    rpc SetTemperature(TemperatureRequest) returns (TemperatureResponse);       // Unary
+    rpc GetCurrentTemperature(Empty) returns (TemperatureResponse);             // Unary
+    rpc StreamTemperatureUpdates(Empty) returns (stream TemperatureResponse);   // Server Streaming
+    rpc AutoAdjustMode(AutoAdjustRequest) returns (StatusResponse);             // Unary
+}
+
+message TemperatureRequest {
+    float temperature = 1;
+}
+
+message TemperatureResponse {
+    float currentTemperature = 1;
+}
+
+message AutoAdjustRequest {
+    bool enable = 1;
+}
+
+message StatusResponse {
+    string message = 1;
+}
+
+message Empty {}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package humiditycontrol;
+
+option java_package = "distsys.smartclimatecontrolsystem.humidity";
+option java_outer_classname = "HumidityControlOuterClass";
+
+service HumidityControl {
+    rpc SetHumidityLevel(stream HumidityRequest) returns (StatusResponse); // Client Streaming
+    rpc GetCurrentHumidity(Empty) returns (HumidityResponse);              // Unary
+    rpc EnableAutoMode(AutoAdjustRequest) returns (StatusResponse);        // Unary
+}
+
+message HumidityRequest {
+    float humidity = 1;
+}
+
+message HumidityResponse {
+    float currentHumidity = 1;
+}
+
+message AutoAdjustRequest {
+    bool enable = 1;
+}
+
+message StatusResponse {
+    string message = 1;
+}
+
+message Empty {}

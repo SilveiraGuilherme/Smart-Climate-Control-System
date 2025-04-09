@@ -15,6 +15,7 @@ import io.grpc.stub.StreamObserver;
 public class ThermostatServiceImpl extends ThermostatGrpc.ThermostatImplBase {
 
     private float currentTemperature = 20.0f; // default value
+    private boolean autoAdjustEnabled = false; // default state
 
     @Override
     public void setTemperature(TemperatureRequest request, StreamObserver<TemperatureResponse> responseObserver) {
@@ -69,5 +70,23 @@ public class ThermostatServiceImpl extends ThermostatGrpc.ThermostatImplBase {
         }
 
         responseObserver.onCompleted(); // End the stream
+    }
+
+    @Override
+    public void autoAdjustMode(AutoAdjustRequest request, StreamObserver<StatusResponse> responseObserver) {
+        // Read the flag from the request
+        autoAdjustEnabled = request.getEnable();
+
+        // Create a confirmation message
+        String message = autoAdjustEnabled ? "Auto-adjust mode enabled" : "Auto-adjust mode disabled";
+
+        // Build the response
+        StatusResponse response = StatusResponse.newBuilder()
+            .setMessage(message)
+            .build();
+
+        // Send response
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

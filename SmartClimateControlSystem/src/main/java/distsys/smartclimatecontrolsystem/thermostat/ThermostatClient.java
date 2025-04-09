@@ -51,6 +51,22 @@ public class ThermostatClient {
 
         System.out.println("Stream ended.");
         
+        // Call AutoAdjustMode with "true" (enable)
+        AutoAdjustRequest enableRequest = AutoAdjustRequest.newBuilder()
+            .setEnable(true)
+            .build();
+
+        StatusResponse enableResponse = thermostatStub.autoAdjustMode(enableRequest);
+        System.out.println("\n" + enableResponse.getMessage());
+
+        // Call AutoAdjustMode with "false" (disable)
+        AutoAdjustRequest disableRequest = AutoAdjustRequest.newBuilder()
+            .setEnable(false)
+            .build();
+
+        StatusResponse disableResponse = thermostatStub.autoAdjustMode(disableRequest);
+        System.out.println(disableResponse.getMessage());
+        
         // Shutdown channel
         channel.shutdown();
     }

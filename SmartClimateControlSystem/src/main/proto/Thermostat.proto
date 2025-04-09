@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package thermostat;
 
-option java_package = "distsys.smartclimatecontrolsystem.thermostat";
+option java_package = "generated.grpc.thermostat";
 option java_outer_classname = "ThermostatOuterClass";
 
 service Thermostat {

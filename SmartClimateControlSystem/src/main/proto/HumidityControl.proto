@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package humiditycontrol;
 
-option java_package = "distsys.smartclimatecontrolsystem.humidity";
+option java_package = "generated.grpc.humidity";
 option java_outer_classname = "HumidityControlOuterClass";
 
 service HumidityControl {

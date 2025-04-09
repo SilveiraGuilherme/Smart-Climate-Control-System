@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package airqualitymonitor;
 
-option java_package = "distsys.smartclimatecontrolsystem.airquality";
+option java_package = "generated.grpc.airquality";
 option java_outer_classname = "AirQualityMonitorOuterClass";
 
 service AirQualityMonitor {

@@ -1,0 +1,10 @@
+<configuration>
+  <!-- Root logger: only show warnings and errors -->
+  <root level="WARN">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+  <!-- Silence gRPC Netty internals -->
+  <logger name="io.grpc.netty.shaded.io.grpc.netty.NettyClientHandler" level="OFF"/>
+  <logger name="io.grpc.netty" level="OFF"/>
+</configuration>

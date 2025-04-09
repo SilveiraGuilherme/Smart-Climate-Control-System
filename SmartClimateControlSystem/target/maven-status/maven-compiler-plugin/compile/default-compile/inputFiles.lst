@@ -1,6 +1,9 @@
-/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/airquality/AirQualityMonitorGrpc.java
-/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/humidity/HumidityControlGrpc.java
-/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/airquality/AirQualityMonitorOuterClass.java
-/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/humidity/HumidityControlOuterClass.java
-/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/thermostat/ThermostatGrpc.java
-/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/thermostat/ThermostatOuterClass.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/generated/grpc/thermostat/ThermostatGrpc.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/thermostat/ThermostatClient.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/generated/grpc/humidity/HumidityControlOuterClass.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/thermostat/ThermostatServiceImpl.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/generated/grpc/thermostat/ThermostatOuterClass.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/generated/grpc/airquality/AirQualityMonitorOuterClass.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/generated/grpc/airquality/AirQualityMonitorGrpc.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/generated/grpc/humidity/HumidityControlGrpc.java
+/Users/guilhermesilveira/Documents/Projects GitHub/Smart-Climate-Control-System/SmartClimateControlSystem/src/main/java/distsys/smartclimatecontrolsystem/thermostat/ThermostatServer.java

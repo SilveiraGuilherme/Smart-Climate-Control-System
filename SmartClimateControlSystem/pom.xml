@@ -12,6 +12,7 @@
          Ensure proper handling of paths on all operating systems 
         -->
         <project.build.directory>${project.basedir}/target</project.build.directory>
+        <org.slf4j.simpleLogger.defaultLogLevel>error</org.slf4j.simpleLogger.defaultLogLevel>
     </properties>
     <dependencies>
         <dependency>

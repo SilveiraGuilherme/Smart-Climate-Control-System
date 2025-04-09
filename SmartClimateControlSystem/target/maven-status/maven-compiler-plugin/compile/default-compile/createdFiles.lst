@@ -1,5 +1,6 @@
 generated/grpc/humidity/HumidityControlOuterClass$HumidityResponseOrBuilder.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityResponse.class
+distsys/smartclimatecontrolsystem/airquality/AirQualityServiceImpl$1.class
 generated/grpc/thermostat/ThermostatOuterClass$TemperatureRequest$Builder.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityAlert$Builder.class
 generated/grpc/thermostat/ThermostatGrpc$ThermostatBlockingStub.class
@@ -12,6 +13,7 @@ generated/grpc/humidity/HumidityControlOuterClass$HumidityResponse.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityCheck$Builder.class
 generated/grpc/airquality/AirQualityMonitorGrpc.class
 generated/grpc/humidity/HumidityControlGrpc$HumidityControlImplBase.class
+distsys/smartclimatecontrolsystem/humidity/HumidityClient$1.class
 generated/grpc/airquality/AirQualityMonitorGrpc$AirQualityMonitorMethodDescriptorSupplier.class
 generated/grpc/humidity/HumidityControlOuterClass$AutoAdjustRequest$1.class
 generated/grpc/thermostat/ThermostatOuterClass$Empty$1.class
@@ -26,6 +28,7 @@ generated/grpc/humidity/HumidityControlOuterClass$StatusResponse.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityCheckOrBuilder.class
 generated/grpc/humidity/HumidityControlOuterClass$Empty.class
 generated/grpc/thermostat/ThermostatOuterClass$EmptyOrBuilder.class
+distsys/smartclimatecontrolsystem/airquality/AirQualityServer.class
 generated/grpc/thermostat/ThermostatGrpc.class
 generated/grpc/thermostat/ThermostatOuterClass$AutoAdjustRequest$Builder.class
 generated/grpc/thermostat/ThermostatGrpc$2.class
@@ -43,11 +46,13 @@ generated/grpc/thermostat/ThermostatOuterClass$StatusResponse$Builder.class
 distsys/smartclimatecontrolsystem/thermostat/ThermostatServiceImpl.class
 generated/grpc/thermostat/ThermostatGrpc$ThermostatStub.class
 generated/grpc/humidity/HumidityControlOuterClass$AutoAdjustRequestOrBuilder.class
+distsys/smartclimatecontrolsystem/humidity/HumidityClient.class
 generated/grpc/thermostat/ThermostatOuterClass$StatusResponse.class
 generated/grpc/thermostat/ThermostatGrpc$1.class
 generated/grpc/humidity/HumidityControlOuterClass$StatusResponse$1.class
 generated/grpc/thermostat/ThermostatOuterClass$Empty$Builder.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityAlertOrBuilder.class
+distsys/smartclimatecontrolsystem/airquality/AirQualityClient.class
 generated/grpc/airquality/AirQualityMonitorGrpc$AirQualityMonitorStub.class
 generated/grpc/thermostat/ThermostatOuterClass$TemperatureRequest.class
 generated/grpc/thermostat/ThermostatOuterClass$1.class
@@ -62,9 +67,12 @@ generated/grpc/thermostat/ThermostatGrpc$MethodHandlers.class
 generated/grpc/humidity/HumidityControlOuterClass$HumidityResponse$Builder.class
 generated/grpc/thermostat/ThermostatGrpc$ThermostatFutureStub.class
 generated/grpc/humidity/HumidityControlGrpc$2.class
+distsys/smartclimatecontrolsystem/humidity/HumidityServiceImpl$1.class
 generated/grpc/airquality/AirQualityMonitorOuterClass.class
 generated/grpc/humidity/HumidityControlOuterClass$HumidityRequest$1.class
 generated/grpc/thermostat/ThermostatGrpc$ThermostatMethodDescriptorSupplier.class
+distsys/smartclimatecontrolsystem/humidity/HumidityServiceImpl.class
+distsys/smartclimatecontrolsystem/humidity/HumidityServer.class
 generated/grpc/humidity/HumidityControlOuterClass$Empty$Builder.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$Empty.class
 generated/grpc/thermostat/ThermostatOuterClass$TemperatureResponseOrBuilder.class
@@ -84,6 +92,7 @@ generated/grpc/airquality/AirQualityMonitorGrpc$AirQualityMonitorFutureStub.clas
 generated/grpc/airquality/AirQualityMonitorOuterClass$Empty$Builder.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityResponse$1.class
 generated/grpc/airquality/AirQualityMonitorGrpc$3.class
+distsys/smartclimatecontrolsystem/airquality/AirQualityClient$1.class
 distsys/smartclimatecontrolsystem/thermostat/ThermostatClient.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityAlert.class
 generated/grpc/humidity/HumidityControlOuterClass$AutoAdjustRequest$Builder.class
@@ -91,6 +100,7 @@ generated/grpc/thermostat/ThermostatGrpc$3.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$AirQualityAlert$1.class
 generated/grpc/thermostat/ThermostatOuterClass$AutoAdjustRequest.class
 generated/grpc/thermostat/ThermostatOuterClass$StatusResponse$1.class
+distsys/smartclimatecontrolsystem/airquality/AirQualityServiceImpl.class
 generated/grpc/humidity/HumidityControlOuterClass$HumidityRequest.class
 generated/grpc/airquality/AirQualityMonitorOuterClass$1.class
 generated/grpc/humidity/HumidityControlGrpc$HumidityControlFileDescriptorSupplier.class

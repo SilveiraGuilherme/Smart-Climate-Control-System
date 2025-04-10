@@ -15,37 +15,6 @@ public final class AirQualityMonitorGrpc {
   public static final String SERVICE_NAME = "airqualitymonitor.AirQualityMonitor";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<generated.grpc.airquality.AirQualityMonitorOuterClass.Empty,
-      generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse> getGetAirQualityMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "GetAirQuality",
-      requestType = generated.grpc.airquality.AirQualityMonitorOuterClass.Empty.class,
-      responseType = generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<generated.grpc.airquality.AirQualityMonitorOuterClass.Empty,
-      generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse> getGetAirQualityMethod() {
-    io.grpc.MethodDescriptor<generated.grpc.airquality.AirQualityMonitorOuterClass.Empty, generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse> getGetAirQualityMethod;
-    if ((getGetAirQualityMethod = AirQualityMonitorGrpc.getGetAirQualityMethod) == null) {
-      synchronized (AirQualityMonitorGrpc.class) {
-        if ((getGetAirQualityMethod = AirQualityMonitorGrpc.getGetAirQualityMethod) == null) {
-          AirQualityMonitorGrpc.getGetAirQualityMethod = getGetAirQualityMethod =
-              io.grpc.MethodDescriptor.<generated.grpc.airquality.AirQualityMonitorOuterClass.Empty, generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetAirQuality"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.grpc.airquality.AirQualityMonitorOuterClass.Empty.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new AirQualityMonitorMethodDescriptorSupplier("GetAirQuality"))
-              .build();
-        }
-      }
-    }
-    return getGetAirQualityMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityCheck,
       generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityAlert> getMonitorAirQualityMethod;
 
@@ -127,16 +96,6 @@ public final class AirQualityMonitorGrpc {
 
     /**
      * <pre>
-     * Unary
-     * </pre>
-     */
-    public void getAirQuality(generated.grpc.airquality.AirQualityMonitorOuterClass.Empty request,
-        io.grpc.stub.StreamObserver<generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAirQualityMethod(), responseObserver);
-    }
-
-    /**
-     * <pre>
      * Bi-directional Streaming
      * </pre>
      */
@@ -147,13 +106,6 @@ public final class AirQualityMonitorGrpc {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getGetAirQualityMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                generated.grpc.airquality.AirQualityMonitorOuterClass.Empty,
-                generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse>(
-                  this, METHODID_GET_AIR_QUALITY)))
           .addMethod(
             getMonitorAirQualityMethod(),
             io.grpc.stub.ServerCalls.asyncBidiStreamingCall(
@@ -181,17 +133,6 @@ public final class AirQualityMonitorGrpc {
 
     /**
      * <pre>
-     * Unary
-     * </pre>
-     */
-    public void getAirQuality(generated.grpc.airquality.AirQualityMonitorOuterClass.Empty request,
-        io.grpc.stub.StreamObserver<generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse> responseObserver) {
-      io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getGetAirQualityMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     * <pre>
      * Bi-directional Streaming
      * </pre>
      */
@@ -215,16 +156,6 @@ public final class AirQualityMonitorGrpc {
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new AirQualityMonitorBlockingStub(channel, callOptions);
     }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse getAirQuality(generated.grpc.airquality.AirQualityMonitorOuterClass.Empty request) {
-      return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getGetAirQualityMethod(), getCallOptions(), request);
-    }
   }
 
   /**
@@ -240,21 +171,9 @@ public final class AirQualityMonitorGrpc {
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new AirQualityMonitorFutureStub(channel, callOptions);
     }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public com.google.common.util.concurrent.ListenableFuture<generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse> getAirQuality(
-        generated.grpc.airquality.AirQualityMonitorOuterClass.Empty request) {
-      return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getGetAirQualityMethod(), getCallOptions()), request);
-    }
   }
 
-  private static final int METHODID_GET_AIR_QUALITY = 0;
-  private static final int METHODID_MONITOR_AIR_QUALITY = 1;
+  private static final int METHODID_MONITOR_AIR_QUALITY = 0;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -273,10 +192,6 @@ public final class AirQualityMonitorGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_AIR_QUALITY:
-          serviceImpl.getAirQuality((generated.grpc.airquality.AirQualityMonitorOuterClass.Empty) request,
-              (io.grpc.stub.StreamObserver<generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityResponse>) responseObserver);
-          break;
         default:
           throw new AssertionError();
       }
@@ -341,7 +256,6 @@ public final class AirQualityMonitorGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new AirQualityMonitorFileDescriptorSupplier())
-              .addMethod(getGetAirQualityMethod())
               .addMethod(getMonitorAirQualityMethod())
               .build();
         }

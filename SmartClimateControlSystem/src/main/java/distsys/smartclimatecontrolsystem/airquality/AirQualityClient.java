@@ -4,40 +4,28 @@
  */
 package distsys.smartclimatecontrolsystem.airquality;
 
-/**
- *
- * @author guilhermesilveira
- */
-
 import generated.grpc.airquality.AirQualityMonitorGrpc;
 import generated.grpc.airquality.AirQualityMonitorOuterClass.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class AirQualityClient {
 
     public static void main(String[] args) throws InterruptedException {
-        // Connect to the server
         ManagedChannel channel = ManagedChannelBuilder
             .forAddress("localhost", 50053)
             .usePlaintext()
             .build();
 
-        // Create an async stub (required for bi-directional streaming)
         AirQualityMonitorGrpc.AirQualityMonitorStub stub = AirQualityMonitorGrpc.newStub(channel);
-
-        // Use a latch to wait for the server to finish
         CountDownLatch latch = new CountDownLatch(1);
 
-        // Define how to handle server's streamed responses
         StreamObserver<AirQualityAlert> responseObserver = new StreamObserver<AirQualityAlert>() {
             @Override
             public void onNext(AirQualityAlert value) {
-                // Called each time the server sends a response
                 System.out.println("Alert received: " + value.getAlertMessage());
             }
 
@@ -54,10 +42,8 @@ public class AirQualityClient {
             }
         };
 
-        // Start the stream: this is how we send messages to the server
         StreamObserver<AirQualityCheck> requestObserver = stub.monitorAirQuality(responseObserver);
 
-        // Simulate sending a list of locations
         String[] locations = {"Kitchen", "Bedroom", "Living Room", "Garage"};
 
         for (String location : locations) {
@@ -68,16 +54,19 @@ public class AirQualityClient {
                 .build();
 
             requestObserver.onNext(request);
-            Thread.sleep(1500); // simulate delay
+            Thread.sleep(1000); // small delay between sends
         }
 
-        // Tell the server we’re done sending
+        // ✅ Wait for a few seconds BEFORE closing the stream
+        Thread.sleep(8000); // enough to receive delayed alerts
+
+        // Now we signal the server we're done
         requestObserver.onCompleted();
 
-        // Wait for server to finish responding (max 10 seconds)
-        latch.await(10, TimeUnit.SECONDS);
+        // Wait for server's onCompleted (extra safety)
+        latch.await(5, TimeUnit.SECONDS);
 
-        // Shutdown the channel
         channel.shutdown();
+        System.out.println("Client shut down.");
     }
 }

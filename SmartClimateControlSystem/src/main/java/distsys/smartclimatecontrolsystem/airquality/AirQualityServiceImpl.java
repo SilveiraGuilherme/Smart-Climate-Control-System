@@ -10,74 +10,88 @@ package distsys.smartclimatecontrolsystem.airquality;
  */
 
 import generated.grpc.airquality.AirQualityMonitorGrpc;
-import generated.grpc.airquality.AirQualityMonitorOuterClass.*;
+import generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityAlert;
+import generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityCheck;
 import io.grpc.stub.StreamObserver;
 
-/**
- * Implements the AirQualityMonitor gRPC service.
- * This method handles a bi-directional streaming call where:
- * - Client sends a stream of AirQualityCheck messages (locations).
- * - Server replies with a stream of AirQualityAlert messages.
- */
 public class AirQualityServiceImpl extends AirQualityMonitorGrpc.AirQualityMonitorImplBase {
 
     @Override
     public StreamObserver<AirQualityCheck> monitorAirQuality(StreamObserver<AirQualityAlert> responseObserver) {
-
-        // Return an observer to receive messages from the client
         return new StreamObserver<AirQualityCheck>() {
 
-            /**
-             * Called every time the client sends a new message (location).
-             */
             @Override
-            public void onNext(AirQualityCheck request) {
-                String location = request.getLocation();
-                String message;
+            public void onNext(AirQualityCheck check) {
+                String room = check.getLocation().toLowerCase();
 
-                // Simulated air quality logic for different locations
-                switch (location.toLowerCase()) {
+                switch (room) {
                     case "kitchen":
-                        message = "Smoke detected in Kitchen!";
+                        responseObserver.onNext(AirQualityAlert.newBuilder()
+                                .setAlertMessage("Kitchen: Air quality is GOOD")
+                                .build());
+                        delayedAlert(responseObserver, "Kitchen: Moderate smoke levels detected", 5000);
+                        delayedAlert(responseObserver, "Kitchen: High smoke levels detected", 10000);
+                        delayedAlert(responseObserver, "Kitchen: Call the fire brigade!", 15000);
                         break;
+
                     case "living room":
-                        message = "Air quality normal in Living Room.";
+                        responseObserver.onNext(AirQualityAlert.newBuilder()
+                                .setAlertMessage("Living Room: Air quality is EXCELLENT")
+                                .build());
+                        delayedAlert(responseObserver, "Living Room: Slight CO2 increase detected", 5000);
+                        delayedAlert(responseObserver, "Living Room: Consider opening a window", 10000);
                         break;
+
                     case "bedroom":
-                        message = "CO2 levels high in Bedroom!";
+                        responseObserver.onNext(AirQualityAlert.newBuilder()
+                                .setAlertMessage("Bedroom: Air quality is FAIR")
+                                .build());
+                        delayedAlert(responseObserver, "Bedroom: This room needs ventilation", 5000);
                         break;
+
                     case "bathroom":
-                        message = "No unusual activity in Bathroom.";
+                        responseObserver.onNext(AirQualityAlert.newBuilder()
+                                .setAlertMessage("Bathroom: High humidity detected")
+                                .build());
+                        delayedAlert(responseObserver, "Bathroom: Ventilation recommended", 5000);
                         break;
+
+                    case "garage":
+                        responseObserver.onNext(AirQualityAlert.newBuilder()
+                                .setAlertMessage("Garage: Slight exhaust fume levels detected")
+                                .build());
+                        delayedAlert(responseObserver, "Garage: Air quality dropped – caution advised", 5000);
+                        delayedAlert(responseObserver, "Garage: Air pollution levels have arised", 10000);
+                        break;
+
                     default:
-                        message = "No data for location: " + location;
+                        responseObserver.onNext(AirQualityAlert.newBuilder()
+                                .setAlertMessage("Unknown room: " + check.getLocation())
+                                .build());
+                        break;
                 }
-
-                // Send alert back to the client
-                AirQualityAlert alert = AirQualityAlert.newBuilder()
-                    .setAlertMessage(message)
-                    .build();
-
-                responseObserver.onNext(alert); // stream the response
-                System.out.println("Checked " + location + " → Sent: " + message);
             }
 
-            /**
-             * Called if the client sends an error or disconnects unexpectedly.
-             */
             @Override
             public void onError(Throwable t) {
-                System.err.println("Error in air quality stream: " + t.getMessage());
+                System.err.println("Air quality stream error: " + t.getMessage());
             }
 
-            /**
-             * Called once the client has finished sending all its messages.
-             */
             @Override
             public void onCompleted() {
-                System.out.println("Client finished sending locations.");
                 responseObserver.onCompleted();
+            }
+
+            private void delayedAlert(StreamObserver<AirQualityAlert> responseObserver, String message, int delayMillis) {
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(delayMillis);
+                        responseObserver.onNext(AirQualityAlert.newBuilder().setAlertMessage(message).build());
+                    } catch (InterruptedException e) {
+                        responseObserver.onError(e);
+                    }
+                }).start();
             }
         };
     }
-}
+} 

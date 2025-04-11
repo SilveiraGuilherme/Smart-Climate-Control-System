@@ -68,14 +68,14 @@ public class HumidityClient {
 
             System.out.println("Sending humidity: " + humidity);
             requestObserver.onNext(request);
-            Thread.sleep(500); // simulate delay between readings
+            Thread.sleep(1000); // simulate delay between readings
         }
 
         // Tell the server you're done sending
         requestObserver.onCompleted();
 
-        // Wait for server to finish (max 5 seconds)
-        latch.await(5, TimeUnit.SECONDS);
+        // Wait for server to finish (max 10 seconds)
+        latch.await(10, TimeUnit.SECONDS);
 
         // Shutdown the channel
         channel.shutdown();

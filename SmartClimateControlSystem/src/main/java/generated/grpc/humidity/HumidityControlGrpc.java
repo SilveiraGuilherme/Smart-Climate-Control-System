@@ -46,68 +46,6 @@ public final class HumidityControlGrpc {
     return getSetHumidityLevelMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<generated.grpc.humidity.HumidityControlOuterClass.Empty,
-      generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse> getGetCurrentHumidityMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "GetCurrentHumidity",
-      requestType = generated.grpc.humidity.HumidityControlOuterClass.Empty.class,
-      responseType = generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<generated.grpc.humidity.HumidityControlOuterClass.Empty,
-      generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse> getGetCurrentHumidityMethod() {
-    io.grpc.MethodDescriptor<generated.grpc.humidity.HumidityControlOuterClass.Empty, generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse> getGetCurrentHumidityMethod;
-    if ((getGetCurrentHumidityMethod = HumidityControlGrpc.getGetCurrentHumidityMethod) == null) {
-      synchronized (HumidityControlGrpc.class) {
-        if ((getGetCurrentHumidityMethod = HumidityControlGrpc.getGetCurrentHumidityMethod) == null) {
-          HumidityControlGrpc.getGetCurrentHumidityMethod = getGetCurrentHumidityMethod =
-              io.grpc.MethodDescriptor.<generated.grpc.humidity.HumidityControlOuterClass.Empty, generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetCurrentHumidity"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.grpc.humidity.HumidityControlOuterClass.Empty.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new HumidityControlMethodDescriptorSupplier("GetCurrentHumidity"))
-              .build();
-        }
-      }
-    }
-    return getGetCurrentHumidityMethod;
-  }
-
-  private static volatile io.grpc.MethodDescriptor<generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest,
-      generated.grpc.humidity.HumidityControlOuterClass.StatusResponse> getEnableAutoModeMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "EnableAutoMode",
-      requestType = generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest.class,
-      responseType = generated.grpc.humidity.HumidityControlOuterClass.StatusResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest,
-      generated.grpc.humidity.HumidityControlOuterClass.StatusResponse> getEnableAutoModeMethod() {
-    io.grpc.MethodDescriptor<generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest, generated.grpc.humidity.HumidityControlOuterClass.StatusResponse> getEnableAutoModeMethod;
-    if ((getEnableAutoModeMethod = HumidityControlGrpc.getEnableAutoModeMethod) == null) {
-      synchronized (HumidityControlGrpc.class) {
-        if ((getEnableAutoModeMethod = HumidityControlGrpc.getEnableAutoModeMethod) == null) {
-          HumidityControlGrpc.getEnableAutoModeMethod = getEnableAutoModeMethod =
-              io.grpc.MethodDescriptor.<generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest, generated.grpc.humidity.HumidityControlOuterClass.StatusResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "EnableAutoMode"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.grpc.humidity.HumidityControlOuterClass.StatusResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new HumidityControlMethodDescriptorSupplier("EnableAutoMode"))
-              .build();
-        }
-      }
-    }
-    return getEnableAutoModeMethod;
-  }
-
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -166,26 +104,6 @@ public final class HumidityControlGrpc {
       return io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall(getSetHumidityLevelMethod(), responseObserver);
     }
 
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public void getCurrentHumidity(generated.grpc.humidity.HumidityControlOuterClass.Empty request,
-        io.grpc.stub.StreamObserver<generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetCurrentHumidityMethod(), responseObserver);
-    }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public void enableAutoMode(generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest request,
-        io.grpc.stub.StreamObserver<generated.grpc.humidity.HumidityControlOuterClass.StatusResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getEnableAutoModeMethod(), responseObserver);
-    }
-
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -195,20 +113,6 @@ public final class HumidityControlGrpc {
                 generated.grpc.humidity.HumidityControlOuterClass.HumidityRequest,
                 generated.grpc.humidity.HumidityControlOuterClass.StatusResponse>(
                   this, METHODID_SET_HUMIDITY_LEVEL)))
-          .addMethod(
-            getGetCurrentHumidityMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                generated.grpc.humidity.HumidityControlOuterClass.Empty,
-                generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse>(
-                  this, METHODID_GET_CURRENT_HUMIDITY)))
-          .addMethod(
-            getEnableAutoModeMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest,
-                generated.grpc.humidity.HumidityControlOuterClass.StatusResponse>(
-                  this, METHODID_ENABLE_AUTO_MODE)))
           .build();
     }
   }
@@ -237,28 +141,6 @@ public final class HumidityControlGrpc {
       return io.grpc.stub.ClientCalls.asyncClientStreamingCall(
           getChannel().newCall(getSetHumidityLevelMethod(), getCallOptions()), responseObserver);
     }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public void getCurrentHumidity(generated.grpc.humidity.HumidityControlOuterClass.Empty request,
-        io.grpc.stub.StreamObserver<generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse> responseObserver) {
-      io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getGetCurrentHumidityMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public void enableAutoMode(generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest request,
-        io.grpc.stub.StreamObserver<generated.grpc.humidity.HumidityControlOuterClass.StatusResponse> responseObserver) {
-      io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getEnableAutoModeMethod(), getCallOptions()), request, responseObserver);
-    }
   }
 
   /**
@@ -273,26 +155,6 @@ public final class HumidityControlGrpc {
     protected HumidityControlBlockingStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new HumidityControlBlockingStub(channel, callOptions);
-    }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse getCurrentHumidity(generated.grpc.humidity.HumidityControlOuterClass.Empty request) {
-      return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getGetCurrentHumidityMethod(), getCallOptions(), request);
-    }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public generated.grpc.humidity.HumidityControlOuterClass.StatusResponse enableAutoMode(generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest request) {
-      return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getEnableAutoModeMethod(), getCallOptions(), request);
     }
   }
 
@@ -309,33 +171,9 @@ public final class HumidityControlGrpc {
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new HumidityControlFutureStub(channel, callOptions);
     }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public com.google.common.util.concurrent.ListenableFuture<generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse> getCurrentHumidity(
-        generated.grpc.humidity.HumidityControlOuterClass.Empty request) {
-      return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getGetCurrentHumidityMethod(), getCallOptions()), request);
-    }
-
-    /**
-     * <pre>
-     * Unary
-     * </pre>
-     */
-    public com.google.common.util.concurrent.ListenableFuture<generated.grpc.humidity.HumidityControlOuterClass.StatusResponse> enableAutoMode(
-        generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest request) {
-      return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getEnableAutoModeMethod(), getCallOptions()), request);
-    }
   }
 
-  private static final int METHODID_GET_CURRENT_HUMIDITY = 0;
-  private static final int METHODID_ENABLE_AUTO_MODE = 1;
-  private static final int METHODID_SET_HUMIDITY_LEVEL = 2;
+  private static final int METHODID_SET_HUMIDITY_LEVEL = 0;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -354,14 +192,6 @@ public final class HumidityControlGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_CURRENT_HUMIDITY:
-          serviceImpl.getCurrentHumidity((generated.grpc.humidity.HumidityControlOuterClass.Empty) request,
-              (io.grpc.stub.StreamObserver<generated.grpc.humidity.HumidityControlOuterClass.HumidityResponse>) responseObserver);
-          break;
-        case METHODID_ENABLE_AUTO_MODE:
-          serviceImpl.enableAutoMode((generated.grpc.humidity.HumidityControlOuterClass.AutoAdjustRequest) request,
-              (io.grpc.stub.StreamObserver<generated.grpc.humidity.HumidityControlOuterClass.StatusResponse>) responseObserver);
-          break;
         default:
           throw new AssertionError();
       }
@@ -427,8 +257,6 @@ public final class HumidityControlGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new HumidityControlFileDescriptorSupplier())
               .addMethod(getSetHumidityLevelMethod())
-              .addMethod(getGetCurrentHumidityMethod())
-              .addMethod(getEnableAutoModeMethod())
               .build();
         }
       }

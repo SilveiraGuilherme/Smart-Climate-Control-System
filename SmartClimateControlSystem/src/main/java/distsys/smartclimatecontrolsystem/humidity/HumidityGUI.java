@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.humidity;
 
 import generated.grpc.humidity.HumidityControlGrpc;
@@ -14,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * GUI for controlling humidity values using client-streaming.
+ * Allows the user to input multiple humidity readings.
+ * 
  * @author guilhermesilveira
  */
 public class HumidityGUI extends javax.swing.JFrame {
@@ -22,14 +20,12 @@ public class HumidityGUI extends javax.swing.JFrame {
     private HumidityControlGrpc.HumidityControlStub asyncStub;
     private List<Float> humidityQueue = new ArrayList<>();
 
-    /**
-     * Creates new form HumidityGUI
-     */
+    // Creates new form HumidityGUI
     public HumidityGUI() {
         initComponents();
-        
         setTitle("Smart Climate Control – Humidity Control");
         
+        // Create gRPC channel ans async stub
         ManagedChannel channel = ManagedChannelBuilder
             .forAddress("localhost", 50052)
             .usePlaintext()
@@ -132,6 +128,7 @@ public class HumidityGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Add humidity value to the queue
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try {
             float value = Float.parseFloat(txtHumidity.getText());
@@ -143,7 +140,13 @@ public class HumidityGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
+    // Send all queued humidity values to the server via gRPC streaming
     private void btnSendAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendAllActionPerformed
+        if (humidityQueue.isEmpty()){
+            txtOutput.append("Queue is empty. Nothing to send.\n");
+            return;
+        }
+        
         txtOutput.append("Sending humidity values to server...\n");
 
         StreamObserver<StatusResponse> responseObserver = new StreamObserver<StatusResponse>() {
@@ -163,6 +166,7 @@ public class HumidityGUI extends javax.swing.JFrame {
             }
         };
 
+        // Create request stream and send eaxh value
         StreamObserver<HumidityRequest> requestObserver = asyncStub.setHumidityLevel(responseObserver);
 
         for (float humidity : humidityQueue) {
@@ -172,6 +176,7 @@ public class HumidityGUI extends javax.swing.JFrame {
             requestObserver.onNext(request);
         }
 
+        // Complete the stream and clear the queue
         requestObserver.onCompleted();
         humidityQueue.clear();
         txtQueue.append("Queue cleared.\n");

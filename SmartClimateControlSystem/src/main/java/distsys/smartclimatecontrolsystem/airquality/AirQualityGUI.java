@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.airquality;
 
 import generated.grpc.airquality.AirQualityMonitorGrpc;
@@ -15,26 +11,25 @@ import io.grpc.stub.StreamObserver;
  *
  * @author guilhermesilveira
  */
+
 public class AirQualityGUI extends javax.swing.JFrame {
 
     private AirQualityMonitorGrpc.AirQualityMonitorStub asyncStub;
     private StreamObserver<AirQualityCheck> requestObserver;
     private boolean monitoringActive = false;
     
-    /**
-     * Creates new form AirQualityGUI
-     */
+    // Creates new form AirQualityGUI
     public AirQualityGUI() {
         initComponents();
-        
         setTitle("Smart Climate Control - Air Quality Monitor");
 
-    ManagedChannel channel = ManagedChannelBuilder
-        .forAddress("localhost", 50053) // adjust port if needed
-        .usePlaintext()
-        .build();
-
-    asyncStub = AirQualityMonitorGrpc.newStub(channel);
+        // Set up gRPC channel and async stub
+        ManagedChannel channel = ManagedChannelBuilder
+            .forAddress("localhost", 50053)
+            .usePlaintext()
+            .build();
+    
+        asyncStub = AirQualityMonitorGrpc.newStub(channel);
     }
 
     /**
@@ -127,6 +122,7 @@ public class AirQualityGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        // Start the bi-directional stream and handle server responses
         requestObserver = asyncStub.monitorAirQuality(new StreamObserver<AirQualityAlert>() {
         
             @Override
@@ -144,6 +140,7 @@ public class AirQualityGUI extends javax.swing.JFrame {
                 txtOutput.append("Monitoring completed by server.\n");
             }
         });
+        
         monitoringActive = true;
         txtOutput.append("Started monitoring.\n");
     }//GEN-LAST:event_btnStartActionPerformed
@@ -196,7 +193,7 @@ public class AirQualityGUI extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        //Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AirQualityGUI().setVisible(true);

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.humidity;
 
 /**
@@ -12,7 +8,6 @@ package distsys.smartclimatecontrolsystem.humidity;
 // Import the generated gRPC service and message types
 import generated.grpc.humidity.HumidityControlGrpc;
 import generated.grpc.humidity.HumidityControlOuterClass.*;
-
 import io.grpc.stub.StreamObserver;
 
 import java.util.ArrayList;
@@ -28,7 +23,6 @@ public class HumidityServiceImpl extends HumidityControlGrpc.HumidityControlImpl
      */
     @Override
     public StreamObserver<HumidityRequest> setHumidityLevel(StreamObserver<StatusResponse> responseObserver) {
-
         // Return a new StreamObserver that listens to incoming messages from the client
         return new StreamObserver<HumidityRequest>() {
 
@@ -60,10 +54,15 @@ public class HumidityServiceImpl extends HumidityControlGrpc.HumidityControlImpl
             @Override
             public void onCompleted() {
                 // Calculate the average humidity (or 0.0 if none received)
-                float average = (float) humidityReadings.stream()
-                    .mapToDouble(Float::doubleValue)
-                    .average()
-                    .orElse(0.0);
+                float average = 0f;
+
+                if (!humidityReadings.isEmpty()) {
+                    float sum = 0f;
+                    for (float h : humidityReadings) {
+                        sum += h;
+                    }
+                    average = sum / humidityReadings.size();
+                }
 
                 // Create a status message
                 String message = "Received " + humidityReadings.size() + " readings. Average: " + average;

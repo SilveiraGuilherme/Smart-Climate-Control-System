@@ -1,8 +1,12 @@
 package distsys.smartclimatecontrolsystem.humidity;
 
 /**
+ * gRPC Server for the HumidityControl service.
  *
- * @author guilhermesilveira
+ * This server hosts the HumidityServiceImpl on port 50052 and handles
+ * client-streaming RPCs for receiving and processing humidity data.
+ *
+ * Author: guilhermesilveira
  */
 
 import io.grpc.Server;
@@ -27,7 +31,7 @@ public class HumidityServer {
                 server.shutdown();
             }));
 
-            // Keep it running
+            // Keep it running until termination
             server.awaitTermination();
 
         } catch (Exception e) {

@@ -1,12 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.thermostat;
 
 /**
+ * gRPC Server for the Thermostat service.
+ * 
+ * This server hosts the ThermostatServiceImpl, listening on port 50051.
+ * It handles RPCs such as setting temperature, retrieving the current temperature,
+ * enabling/disabling auto-adjust mode, and streaming temperature updates.
  *
- * @author guilhermesilveira
+ * Author: guilhermesilveira
  */
 
 import io.grpc.Server;
@@ -28,7 +29,13 @@ public class ThermostatServer {
             server.start();
             System.out.println("Thermostat Server started on port " + PORT);
 
-            // Keep it running until terminated
+            // Shutdown the server on termination
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Shutting down Thermostat server...");
+                server.shutdown();
+            }));
+            
+            // Keep it running until termination
             server.awaitTermination();
 
         } catch (Exception e) {

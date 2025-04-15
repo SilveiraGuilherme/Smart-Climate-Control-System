@@ -1,16 +1,22 @@
 package distsys.smartclimatecontrolsystem.airquality;
 
 /**
- * 
- * @author guilhermesilveira
+ * gRPC Server for the AirQualityMonitor service.
+ *
+ * This server hosts the AirQualityServiceImpl on port 50053 and supports
+ * bi-directional streaming communication between clients and the service.
+ * It simulates an air quality monitoring system for a smart home environment.
+ *
+ * Author: guilhermesilveira
  */
+
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 public class AirQualityServer {
     public static void main(String[] args) {
-        final int PORT = 50053; // Use a different port than thermostat (50051)
+        final int PORT = 50053; // Unique port for Air Quality service
 
         
         try {
@@ -22,7 +28,7 @@ public class AirQualityServer {
 
             System.out.println("Air Quality Server started on port " + PORT);
             
-            // Shutdown hook to cleanly shut down the server on termination
+            // Shutdown the server on termination
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("Shutting down server...");
                 server.shutdown();

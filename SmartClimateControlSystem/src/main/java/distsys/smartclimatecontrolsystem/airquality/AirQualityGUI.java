@@ -94,28 +94,28 @@ public class AirQualityGUI extends javax.swing.JFrame {
                     .addComponent(btnStop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                     .addComponent(comboRooms, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addGap(43, 43, 43))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(comboRooms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnStart)
                         .addGap(18, 18, 18)
                         .addComponent(btnSend)
                         .addGap(18, 18, 18)
                         .addComponent(btnStop)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -123,26 +123,45 @@ public class AirQualityGUI extends javax.swing.JFrame {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         // Start the bi-directional stream and handle server responses
-        requestObserver = asyncStub.monitorAirQuality(new StreamObserver<AirQualityAlert>() {
+        try{
+            requestObserver = asyncStub.monitorAirQuality(new StreamObserver<AirQualityAlert>() {
         
-            @Override
-            public void onNext(AirQualityAlert alert) {
-                txtOutput.append("Alert: " + alert.getAlertMessage() + "\n");
-            }
+                @Override
+                public void onNext(AirQualityAlert alert) {
+                    txtOutput.append("Alert: " + alert.getAlertMessage() + "\n");
+                    txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
+                }
 
-            @Override
-            public void onError(Throwable t) {
-                txtOutput.append("Error: " + t.getMessage() + "\n");
-            }
+                @Override
+                public void onError(Throwable t) {
+                    String errorMsg = t.getMessage();
+                    if (errorMsg.contains("UNAVAILABLE")) {
+                        txtOutput.append("Server is not running or unreachable. Please start the server.\n");
+                        txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
+                    } else {
+                        txtOutput.append("Error: " + errorMsg + "\n");
+                        txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
+                    }
+                    monitoringActive = false;
+                }
 
-            @Override
-            public void onCompleted() {
-                txtOutput.append("Monitoring completed by server.\n");
-            }
-        });
+                @Override
+                public void onCompleted() {
+                    txtOutput.append("Monitoring completed by server.\n");
+                    txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
+                    monitoringActive = false;
+                }
+            });
         
-        monitoringActive = true;
-        txtOutput.append("Started monitoring.\n");
+            monitoringActive = true;
+            txtOutput.append("Started monitoring.\n");
+            txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
+        
+        } catch (Exception e) {
+            txtOutput.append("Failed to start monitoring: " + e.getMessage() + "\n");
+            txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
+            monitoringActive = false;
+        }
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -153,8 +172,10 @@ public class AirQualityGUI extends javax.swing.JFrame {
                 .build();
             requestObserver.onNext(check);
             txtOutput.append("Sent room: " + location + "\n");
+            txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
         } else {
             txtOutput.append("Start monitoring first.\n");
+            txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
@@ -163,6 +184,7 @@ public class AirQualityGUI extends javax.swing.JFrame {
             requestObserver.onCompleted();
             monitoringActive = false;
             txtOutput.append("Monitoring stopped.\n");
+            txtOutput.setCaretPosition(txtOutput.getDocument().getLength());
         }
     }//GEN-LAST:event_btnStopActionPerformed
 

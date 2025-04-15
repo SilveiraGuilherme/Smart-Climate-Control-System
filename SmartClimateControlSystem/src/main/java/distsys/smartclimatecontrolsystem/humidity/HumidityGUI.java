@@ -23,6 +23,7 @@ public class HumidityGUI extends javax.swing.JFrame {
     // Creates new form HumidityGUI
     public HumidityGUI() {
         initComponents();
+        txtHumidity.requestFocusInWindow();
         setTitle("Smart Climate Control – Humidity Control");
         
         // Create gRPC channel ans async stub
@@ -89,24 +90,20 @@ public class HumidityGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSendAll)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtHumidity)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnAdd))))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtHumidity)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAdd))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addComponent(btnSendAll)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)))
+                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,13 +113,13 @@ public class HumidityGUI extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(txtHumidity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdd))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2)
                     .addComponent(btnSendAll))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -157,7 +154,12 @@ public class HumidityGUI extends javax.swing.JFrame {
 
             @Override
             public void onError(Throwable t) {
-                txtOutput.append("Error: " + t.getMessage() + "\n");
+                String errorMessage = t.getMessage();
+                if (errorMessage.contains("UNAVAILABLE")) {
+                    txtOutput.append("Server is not running or unreachable. Please start the server.\n");
+                } else {
+                    txtOutput.append("Error: " + errorMessage + "\n");
+                }
             }
 
             @Override
@@ -166,20 +168,24 @@ public class HumidityGUI extends javax.swing.JFrame {
             }
         };
 
-        // Create request stream and send eaxh value
-        StreamObserver<HumidityRequest> requestObserver = asyncStub.setHumidityLevel(responseObserver);
+        // Create request stream and send each value
+        try {
+            StreamObserver<HumidityRequest> requestObserver = asyncStub.setHumidityLevel(responseObserver);
 
-        for (float humidity : humidityQueue) {
-            HumidityRequest request = HumidityRequest.newBuilder()
-                .setHumidity(humidity)
-                .build();
-            requestObserver.onNext(request);
+            for (float humidity : humidityQueue) {
+                HumidityRequest request = HumidityRequest.newBuilder()
+                    .setHumidity(humidity)
+                    .build();
+                requestObserver.onNext(request);
+            }
+            // Complete the stream and clear the queue
+            requestObserver.onCompleted();
+            humidityQueue.clear();
+            txtQueue.append("Queue cleared.\n");
+            
+        } catch (Exception e) {
+            txtOutput.append("Unexpected error: " + e.getMessage() + "\n");
         }
-
-        // Complete the stream and clear the queue
-        requestObserver.onCompleted();
-        humidityQueue.clear();
-        txtQueue.append("Queue cleared.\n");
     }//GEN-LAST:event_btnSendAllActionPerformed
 
     private void txtHumidityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHumidityActionPerformed

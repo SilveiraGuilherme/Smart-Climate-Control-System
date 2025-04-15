@@ -1,8 +1,17 @@
 package distsys.smartclimatecontrolsystem.humidity;
 
 /**
+ * Implementation of the HumidityControl gRPC service.
+ * Handles the single operation defined in HumidityControl.proto:
  *
- * @author guilhermesilveira
+ * - SetHumidityLevel: receives a stream of humidity values from the client (Client Streaming)
+ *   and returns a status message once the stream is complete.
+ *
+ * This service simulates a smart home humidity controller. Clients can send
+ * multiple humidity readings in a single session, and the server processes
+ * them to update the internal state or apply logic accordingly.
+ *
+ * Author: guilhermesilveira
  */
 
 // Import the generated gRPC service and message types
@@ -35,6 +44,13 @@ public class HumidityServiceImpl extends HumidityControlGrpc.HumidityControlImpl
             @Override
             public void onNext(HumidityRequest value) {
                 float humidity = value.getHumidity();
+                
+                // Validate the humidity range
+                if (humidity < 0 || humidity > 100) {
+                    System.out.println("Ignored invalid humidity value: " + humidity);
+                    return;
+                }
+                
                 humidityReadings.add(humidity); // Save the reading
                 System.out.println("Received humidity: " + humidity);
             }
@@ -65,7 +81,9 @@ public class HumidityServiceImpl extends HumidityControlGrpc.HumidityControlImpl
                 }
 
                 // Create a status message
-                String message = "Received " + humidityReadings.size() + " readings. Average: " + average;
+                String message = humidityReadings.isEmpty()
+                    ? "No valid humidity readings were received."
+                    : "Received " + humidityReadings.size() + " readings. Average: " + average;
 
                 // Build the response message
                 StatusResponse response = StatusResponse.newBuilder()

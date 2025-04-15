@@ -1,21 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.thermostat;
 
 /**
+ * Implementation of the Thermostat gRPC service.
+ * Handles operations defined in Thermostat.proto:
  *
- * @author guilhermesilveira
+ * - SetTemperature: sets a new temperature value (Unary)
+ * - GetCurrentTemperature: retrieves the current temperature (Unary)
+ * - StreamTemperatureUpdates: sends a series of simulated temperature readings (Server Streaming)
+ * - AutoAdjustMode: enables or disables automatic temperature adjustment (Unary)
+ *
+ * This service simulates the behavior of a smart thermostat in a smart home environment,
+ * allowing clients to configure and monitor temperature settings and modes.
+ *
+ * Author: guilhermesilveira
  */
+
 import generated.grpc.thermostat.ThermostatGrpc;
 import generated.grpc.thermostat.ThermostatOuterClass.*;
 import io.grpc.stub.StreamObserver;
 
 public class ThermostatServiceImpl extends ThermostatGrpc.ThermostatImplBase {
 
-    private float currentTemperature = 20.0f; // default value
-    private boolean autoAdjustEnabled = false; // default state
+    private float currentTemperature = 20.0f; // Default value
+    private boolean autoAdjustEnabled = false; // Auto-adjust toogle
 
     @Override
     public void setTemperature(TemperatureRequest request, StreamObserver<TemperatureResponse> responseObserver) {
@@ -74,11 +81,13 @@ public class ThermostatServiceImpl extends ThermostatGrpc.ThermostatImplBase {
 
     @Override
     public void autoAdjustMode(AutoAdjustRequest request, StreamObserver<StatusResponse> responseObserver) {
-        // Read the flag from the request
+        // Toggle auto-adjust mode
         autoAdjustEnabled = request.getEnable();
 
         // Create a confirmation message
-        String message = autoAdjustEnabled ? "Auto-adjust mode enabled" : "Auto-adjust mode disabled";
+        String message = autoAdjustEnabled
+                ? "Auto-adjust mode enabled"
+                : "Auto-adjust mode disabled";
 
         // Build the response
         StatusResponse response = StatusResponse.newBuilder()

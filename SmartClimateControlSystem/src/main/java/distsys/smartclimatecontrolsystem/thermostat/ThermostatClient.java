@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.thermostat;
 
 /**
- *
+ * The Thermostat service demonstrates how to call unary and server streaming RPC methods.
+ * 
  * @author guilhermesilveira
  */
 
@@ -23,11 +20,11 @@ public class ThermostatClient {
             .usePlaintext() // disables TLS for simplicity
             .build();
 
-        // Create a stub (remote control)
+        // Create a stub for unary and streaming RPCs
         ThermostatGrpc.ThermostatBlockingStub thermostatStub =
             ThermostatGrpc.newBlockingStub(channel);
 
-        // Create request
+        // Set the temperature using a unary RPC
         TemperatureRequest request = TemperatureRequest.newBuilder()
             .setTemperature(22.5f)
             .build();
@@ -40,10 +37,9 @@ public class ThermostatClient {
         // Get current temperature
         TemperatureResponse current = thermostatStub.getCurrentTemperature(Empty.newBuilder().build());
         System.out.println("Current temperature is " + current.getCurrentTemperature());
-        
-        System.out.println("\nStreaming temperature updates:\n");
 
-        // Call the server streaming method
+        // Stream temperature updates from the server (Server Streaming)
+        System.out.println("\nStreaming temperature updates:\n");
         thermostatStub.streamTemperatureUpdates(Empty.newBuilder().build())
         .forEachRemaining(update -> {
              System.out.println("Received update: " + update.getCurrentTemperature());
@@ -51,7 +47,7 @@ public class ThermostatClient {
 
         System.out.println("Stream ended.");
         
-        // Call AutoAdjustMode with "true" (enable)
+        // Call AutoAdjustMode with "true" (enable auto-adjust mode)
         AutoAdjustRequest enableRequest = AutoAdjustRequest.newBuilder()
             .setEnable(true)
             .build();
@@ -59,7 +55,7 @@ public class ThermostatClient {
         StatusResponse enableResponse = thermostatStub.autoAdjustMode(enableRequest);
         System.out.println("\n" + enableResponse.getMessage());
 
-        // Call AutoAdjustMode with "false" (disable)
+        // Call AutoAdjustMode with "false" (disable auto-adjust mode)
         AutoAdjustRequest disableRequest = AutoAdjustRequest.newBuilder()
             .setEnable(false)
             .build();
@@ -67,7 +63,7 @@ public class ThermostatClient {
         StatusResponse disableResponse = thermostatStub.autoAdjustMode(disableRequest);
         System.out.println(disableResponse.getMessage());
         
-        // Shutdown channel
+        // Shutdown the channel
         channel.shutdown();
     }
 }

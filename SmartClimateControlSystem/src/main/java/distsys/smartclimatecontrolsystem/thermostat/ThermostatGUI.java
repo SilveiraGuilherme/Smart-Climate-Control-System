@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package distsys.smartclimatecontrolsystem.thermostat;
 
 import generated.grpc.thermostat.ThermostatGrpc;
@@ -14,7 +10,12 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 /**
- *
+ * GUI for controlling thermostat features including:
+ * - Setting temperature (Unary)
+ * - Getting current temperature (Unary)
+ * - Enabling/disabling auto-adjust mode (Unary)
+ * - Streaming temperature updates (Server Streaming)
+ * 
  * @author guilhermesilveira
  */
 public class ThermostatGUI extends javax.swing.JFrame {
@@ -24,9 +25,9 @@ public class ThermostatGUI extends javax.swing.JFrame {
     
     public ThermostatGUI() {
         initComponents();
-        
         setTitle("Smart Climate Control – Thermostat");
         
+        // Set up the gRPC channel and stub
         ManagedChannel channel = ManagedChannelBuilder
         .forAddress("localhost", 50051)
         .usePlaintext()
@@ -104,36 +105,39 @@ public class ThermostatGUI extends javax.swing.JFrame {
                     .addComponent(btnGetTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSetTemp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2)
+                    .addComponent(txtTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
                 .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                        .addGap(40, 40, 40))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSetTemp)
-                        .addGap(33, 33, 33)
+                        .addGap(18, 18, 18)
                         .addComponent(btnGetTemp)
-                        .addGap(33, 33, 33)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAutoAdjust)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnStreamUpdates))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnStreamUpdates)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Handles Set Temperature button click
     private void btnSetTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetTempActionPerformed
         try {
             float temp = Float.parseFloat(txtTemperature.getText());
@@ -144,32 +148,41 @@ public class ThermostatGUI extends javax.swing.JFrame {
             txtOutput.append("Temp set to: " + response.getCurrentTemperature() + "\n");
         } catch (NumberFormatException ex) {
             txtOutput.append("Invalid number.\n");
+        } catch (Exception ex) {
+            txtOutput.append("Could not connect to Thermostat service. Is the server running?\n");
         }
     }//GEN-LAST:event_btnSetTempActionPerformed
 
+    // Handles Get Temperature button click
     private void btnGetTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetTempActionPerformed
         try {
             TemperatureResponse response = blockingStub.getCurrentTemperature(Empty.newBuilder().build());
             txtOutput.append("Current Temp: " + response.getCurrentTemperature() + "\n");
         } catch (Exception ex) {
-            txtOutput.append("Error: " + ex.getMessage() + "\n");
+            txtOutput.append("Failed to retrieve temperature. Please check if the server is running.\n");
         }
     }//GEN-LAST:event_btnGetTempActionPerformed
 
+    // Handles Auto Adjust button toogle
     private void btnAutoAdjustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoAdjustActionPerformed
-        autoAdjustEnabled = !autoAdjustEnabled;
-
-        AutoAdjustRequest request = AutoAdjustRequest.newBuilder()
+        try{
+            autoAdjustEnabled = !autoAdjustEnabled;
+            // Toggle state
+            AutoAdjustRequest request = AutoAdjustRequest.newBuilder()
             .setEnable(autoAdjustEnabled)
             .build();
-
-        StatusResponse response = blockingStub.autoAdjustMode(request);
-        txtOutput.append(response.getMessage() + "\n");
+            StatusResponse response = blockingStub.autoAdjustMode(request);
+            txtOutput.append(response.getMessage() + "\n");
+        } catch (Exception ex){
+            txtOutput.append("Error streaming temperature updates. Make sure the server is active.\n");
+        }
     }//GEN-LAST:event_btnAutoAdjustActionPerformed
 
+    // Handles Temperature Updates button click (server streaming)
     private void btnStreamUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStreamUpdatesActionPerformed
         txtOutput.append("Starting temperature stream...\n");
 
+        // Run streaming in a separate thread to avoid blocking GUI
         new Thread(() -> {
             try {
                 blockingStub.streamTemperatureUpdates(Empty.newBuilder().build())
@@ -178,7 +191,7 @@ public class ThermostatGUI extends javax.swing.JFrame {
                     });
                 txtOutput.append("Stream ended.\n");
             } catch (Exception ex) {
-                txtOutput.append("Streaming error: " + ex.getMessage() + "\n");
+                txtOutput.append("Error streaming temperature updates. Make sure the server is active.\n");
             }
         }).start();
     }//GEN-LAST:event_btnStreamUpdatesActionPerformed

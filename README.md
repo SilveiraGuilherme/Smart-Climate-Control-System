@@ -103,5 +103,5 @@ smart-climate-control-system/
 ## 👤 Author
 
 **Guilherme Silveira**  
-📧 guilherme@example.com  
+📧 gws.silveira@gmail.com  
 🌍 Dublin, Ireland

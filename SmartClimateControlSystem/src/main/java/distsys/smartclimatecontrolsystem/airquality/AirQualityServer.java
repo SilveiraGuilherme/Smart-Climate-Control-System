@@ -11,6 +11,7 @@ package distsys.smartclimatecontrolsystem.airquality;
  */
 
 
+import distsys.smartclimatecontrolsystem.security.JwtServerInterceptor;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
@@ -23,6 +24,7 @@ public class AirQualityServer {
             // Build and start the gRPC server on port 50053
             Server server = ServerBuilder.forPort(PORT)
                 .addService(new AirQualityServiceImpl()) // Register the service implementation
+                .intercept(new JwtServerInterceptor())
                 .build()
                 .start();
 

@@ -10,6 +10,7 @@ package distsys.smartclimatecontrolsystem.thermostat;
  * Author: guilhermesilveira
  */
 
+import distsys.smartclimatecontrolsystem.security.JwtServerInterceptor;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
@@ -22,7 +23,8 @@ public class ThermostatServer {
             // Build the server and add the service
             Server server = ServerBuilder
                 .forPort(PORT)
-                .addService(new ThermostatServiceImpl())
+                .addService(new ThermostatServiceImpl()) // Register the service implementation
+                .intercept(new JwtServerInterceptor())
                 .build();
 
             // Start the server

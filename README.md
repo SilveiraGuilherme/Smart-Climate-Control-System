@@ -11,6 +11,7 @@ A simulated smart home system developed in **Java** using **gRPC**, consisting o
 - **NetBeans IDE**
 - **Swing (Java GUI)**
 - **Protocol Buffers (proto3)**
+- **JWT Authentication**
 
 ---
 
@@ -21,6 +22,16 @@ A simulated smart home system developed in **Java** using **gRPC**, consisting o
 | **Thermostat**       | Unary + Server Stream  | Set/Get temperature, toggle auto-adjust mode, stream periodic updates.     |
 | **Humidity Control** | Client Streaming       | Send multiple humidity readings and receive a summary response.            |
 | **Air Quality Monitor** | Bi-Directional Stream | Live monitoring: send room names and receive ongoing air quality alerts.    |
+
+---
+
+## 🔐 Security Features
+
+- **JWT Authentication** between clients and servers
+- **gRPC Interceptors** on both client and server for token validation
+- Secure key management using `io.jsonwebtoken`
+- Clear feedback when services are unavailable or unauthenticated
+- Custom error messages in GUI
 
 ---
 
@@ -40,6 +51,10 @@ smart-climate-control-system/
 │   ├── AirQualityServer.java
 │   ├── AirQualityServiceImpl.java
 │   ├── AirQualityGUI.java
+├── security/
+│   ├── JwtUtil.java
+│   ├── JwtClientInterceptor.java
+│   └── JwtServerInterceptor.java
 ├── protos/
 │   ├── Thermostat.proto
 │   ├── HumidityControl.proto
@@ -71,13 +86,6 @@ smart-climate-control-system/
 
 ---
 
-## 🔐 Security Features
-
-- Basic error handling with user-friendly GUI messages
-- Clear feedback when services are unavailable
-
----
-
 ## 📸 Screenshots
 
 | Thermostat GUI | Humidity GUI | Air Quality GUI |
@@ -97,6 +105,7 @@ smart-climate-control-system/
 
 - [gRPC Java Documentation](https://grpc.io/docs/languages/java/)
 - [Protocol Buffers](https://developers.google.com/protocol-buffers)
+- [jjwt GitHub](https://github.com/jwtk/jjwt)
 
 ---
 

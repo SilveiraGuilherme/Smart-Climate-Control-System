@@ -9,6 +9,7 @@ package distsys.smartclimatecontrolsystem.humidity;
  * Author: guilhermesilveira
  */
 
+import distsys.smartclimatecontrolsystem.security.JwtServerInterceptor;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
@@ -19,7 +20,8 @@ public class HumidityServer {
         try {
             // Create the gRPC server and register the service
             Server server = ServerBuilder.forPort(PORT)
-                .addService(new HumidityServiceImpl())
+                .addService(new HumidityServiceImpl()) // Register the service implementation
+                .intercept(new JwtServerInterceptor())
                 .build()
                 .start(); // Start the server
             

@@ -1,8 +1,12 @@
 package distsys.smartclimatecontrolsystem.humidity;
 
+import distsys.smartclimatecontrolsystem.security.JwtClientInterceptor;
+import distsys.smartclimatecontrolsystem.security.JwtUtil;
 import generated.grpc.humidity.HumidityControlGrpc;
 import generated.grpc.humidity.HumidityControlOuterClass.HumidityRequest;
 import generated.grpc.humidity.HumidityControlOuterClass.StatusResponse;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -26,13 +30,18 @@ public class HumidityGUI extends javax.swing.JFrame {
         txtHumidity.requestFocusInWindow();
         setTitle("Smart Climate Control – Humidity Control");
         
+        String jwt = JwtUtil.generateToken("clientUser");
+        
         // Create gRPC channel ans async stub
-        ManagedChannel channel = ManagedChannelBuilder
+        ManagedChannel baseChannel = ManagedChannelBuilder
             .forAddress("localhost", 50052)
             .usePlaintext()
             .build();
 
-        asyncStub = HumidityControlGrpc.newStub(channel);
+        // Attach JWT interceptor to the channel
+        Channel securedChannel = ClientInterceptors.intercept(baseChannel, new JwtClientInterceptor(jwt));
+
+        asyncStub = HumidityControlGrpc.newStub(securedChannel);
     }
 
     /**

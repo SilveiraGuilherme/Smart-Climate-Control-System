@@ -1,11 +1,15 @@
 package distsys.smartclimatecontrolsystem.thermostat;
 
+import distsys.smartclimatecontrolsystem.security.JwtClientInterceptor;
+import distsys.smartclimatecontrolsystem.security.JwtUtil;
 import generated.grpc.thermostat.ThermostatGrpc;
 import generated.grpc.thermostat.ThermostatOuterClass.AutoAdjustRequest;
 import generated.grpc.thermostat.ThermostatOuterClass.Empty;
 import generated.grpc.thermostat.ThermostatOuterClass.StatusResponse;
 import generated.grpc.thermostat.ThermostatOuterClass.TemperatureRequest;
 import generated.grpc.thermostat.ThermostatOuterClass.TemperatureResponse;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -27,13 +31,17 @@ public class ThermostatGUI extends javax.swing.JFrame {
         initComponents();
         setTitle("Smart Climate Control – Thermostat");
         
-        // Set up the gRPC channel and stub
-        ManagedChannel channel = ManagedChannelBuilder
-        .forAddress("localhost", 50051)
-        .usePlaintext()
-        .build();
+        String jwt = JwtUtil.generateToken("clientUser");
+        
+        ManagedChannel baseChannel = ManagedChannelBuilder
+            .forAddress("localhost", 50051)
+            .usePlaintext()
+            .build();
 
-        blockingStub = ThermostatGrpc.newBlockingStub(channel);
+        // Attach JWT interceptor to the channel
+        Channel securedChannel = ClientInterceptors.intercept(baseChannel, new JwtClientInterceptor(jwt));
+
+        blockingStub = ThermostatGrpc.newBlockingStub(securedChannel);
     }
 
     /**

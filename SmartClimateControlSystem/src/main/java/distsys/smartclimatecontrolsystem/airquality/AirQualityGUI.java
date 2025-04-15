@@ -1,8 +1,12 @@
 package distsys.smartclimatecontrolsystem.airquality;
 
+import distsys.smartclimatecontrolsystem.security.JwtClientInterceptor;
+import distsys.smartclimatecontrolsystem.security.JwtUtil;
 import generated.grpc.airquality.AirQualityMonitorGrpc;
 import generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityAlert;
 import generated.grpc.airquality.AirQualityMonitorOuterClass.AirQualityCheck;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -22,14 +26,19 @@ public class AirQualityGUI extends javax.swing.JFrame {
     public AirQualityGUI() {
         initComponents();
         setTitle("Smart Climate Control - Air Quality Monitor");
+        
+        String jwt = JwtUtil.generateToken("clientUser");
 
         // Set up gRPC channel and async stub
-        ManagedChannel channel = ManagedChannelBuilder
+        ManagedChannel baseChannel = ManagedChannelBuilder
             .forAddress("localhost", 50053)
             .usePlaintext()
             .build();
+
+        // Attach JWT interceptor to the channel
+        Channel securedChannel = ClientInterceptors.intercept(baseChannel, new JwtClientInterceptor(jwt));
     
-        asyncStub = AirQualityMonitorGrpc.newStub(channel);
+        asyncStub = AirQualityMonitorGrpc.newStub(securedChannel);
     }
 
     /**

@@ -1,7 +1,12 @@
 package distsys.smartclimatecontrolsystem.airquality;
 
+import distsys.smartclimatecontrolsystem.security.JwtClientInterceptor;
+import distsys.smartclimatecontrolsystem.security.JwtUtil;
 import generated.grpc.airquality.AirQualityMonitorGrpc;
 import generated.grpc.airquality.AirQualityMonitorOuterClass.*;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptor;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -16,9 +21,16 @@ public class AirQualityClient {
             .forAddress("localhost", 50053)
             .usePlaintext()
             .build();
+        
+        // Generate token
+        String jwtToken = JwtUtil.generateToken("client-user");
+        
+        // Attach interceptor
+        ClientInterceptor jwtInterceptor = new JwtClientInterceptor(jwtToken);
+        Channel interceptedChannel = ClientInterceptors.intercept(channel, jwtInterceptor);
 
         // Create an asynchronous stub for bi-directional communication
-        AirQualityMonitorGrpc.AirQualityMonitorStub stub = AirQualityMonitorGrpc.newStub(channel);
+        AirQualityMonitorGrpc.AirQualityMonitorStub stub = AirQualityMonitorGrpc.newStub(interceptedChannel);
         
         // Use CountDownLatch to block the main thread until all server responses are received
         CountDownLatch latch = new CountDownLatch(1);

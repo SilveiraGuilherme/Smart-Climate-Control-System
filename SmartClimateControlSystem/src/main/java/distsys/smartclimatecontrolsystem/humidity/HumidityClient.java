@@ -5,8 +5,13 @@ package distsys.smartclimatecontrolsystem.humidity;
  * @author guilhermesilveira
  */
 
+import distsys.smartclimatecontrolsystem.security.JwtClientInterceptor;
+import distsys.smartclimatecontrolsystem.security.JwtUtil;
 import generated.grpc.humidity.HumidityControlGrpc;
 import generated.grpc.humidity.HumidityControlOuterClass.*;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptor;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -20,9 +25,16 @@ public class HumidityClient {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50052)
             .usePlaintext() // no TLS
             .build();
+        
+        // Generate token
+        String jwtToken = JwtUtil.generateToken("client-user");
+        
+        // Attach interceptor
+        ClientInterceptor jwtInterceptor = new JwtClientInterceptor(jwtToken);
+        Channel interceptedChannel = ClientInterceptors.intercept(channel, jwtInterceptor);
 
         // Create an async stub for client-streaming
-        HumidityControlGrpc.HumidityControlStub stub = HumidityControlGrpc.newStub(channel);
+        HumidityControlGrpc.HumidityControlStub stub = HumidityControlGrpc.newStub(interceptedChannel);
 
         // Synchronization tool to wait for server response before exiting
         CountDownLatch latch = new CountDownLatch(1);

@@ -6,8 +6,13 @@ package distsys.smartclimatecontrolsystem.thermostat;
  * @author guilhermesilveira
  */
 
+import distsys.smartclimatecontrolsystem.security.JwtClientInterceptor;
+import distsys.smartclimatecontrolsystem.security.JwtUtil;
 import generated.grpc.thermostat.ThermostatGrpc;
 import generated.grpc.thermostat.ThermostatOuterClass.*;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptor;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -19,10 +24,17 @@ public class ThermostatClient {
             .forAddress("localhost", 50051)
             .usePlaintext() // disables TLS for simplicity
             .build();
+        
+        // Generate token
+        String jwtToken = JwtUtil.generateToken("client-user");
+        
+        // Attach interceptor
+        ClientInterceptor jwtInterceptor = new JwtClientInterceptor(jwtToken);
+        Channel interceptedChannel = ClientInterceptors.intercept(channel, jwtInterceptor);
 
         // Create a stub for unary and streaming RPCs
         ThermostatGrpc.ThermostatBlockingStub thermostatStub =
-            ThermostatGrpc.newBlockingStub(channel);
+            ThermostatGrpc.newBlockingStub(interceptedChannel);
 
         // Set the temperature using a unary RPC
         TemperatureRequest request = TemperatureRequest.newBuilder()

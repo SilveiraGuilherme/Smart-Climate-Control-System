@@ -94,10 +94,9 @@ smart-climate-control-system/
 
 ---
 
-## 📚 Report & Demo
+## 📚 Report
 
-- 📄 [Project Report (PDF)](link-to-report)
-- 🎥 [Video Demo (YouTube)](link-to-video)
+- 📄 [Project Report (PDF)](https://github.com/SilveiraGuilherme/Smart-Climate-Control-System/blob/main/Report/Smart%20Climate%20Control%20System.pdf)
 
 ---
 

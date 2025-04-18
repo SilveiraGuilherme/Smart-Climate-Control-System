@@ -25,11 +25,14 @@ public class JwtServerInterceptor implements ServerInterceptor {
         }
 
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token);
             logger.info("JWT verified successfully.");
         } catch (JwtException e) {
             call.close(Status.UNAUTHENTICATED.withDescription("Invalid JWT token: " + e.getMessage()), headers);
-            return new ServerCall.Listener() {};
+            return new ServerCall.Listener<ReqT>() {};
         }
 
         return next.startCall(call, headers);
